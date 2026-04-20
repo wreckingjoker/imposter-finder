@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PRESETS = [
@@ -21,8 +22,17 @@ const PRESETS = [
   },
 ];
 
+const HOW_TO_PLAY = [
+  { step: '1', title: 'Add Players',   desc: 'Enter 3–10 player names in the lobby.' },
+  { step: '2', title: 'Get Your Word', desc: 'Pass the phone around. Each player taps their card — a secret word appears for 3 seconds, then hides.' },
+  { step: '3', title: 'Give Hints',    desc: 'Take turns saying one clue about your word without revealing it. The imposter bluffs along.' },
+  { step: '4', title: 'Vote',          desc: 'After all hints, everyone votes for who they think is the imposter.' },
+  { step: '5', title: 'Win or Lose',   desc: 'Crew wins by voting out the imposter. Imposter wins by surviving until only 2 players remain.' },
+];
+
 export default function PresetSelect() {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   function selectPreset(id) {
     localStorage.setItem('imposter-finder-preset', id);
@@ -30,7 +40,7 @@ export default function PresetSelect() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center max-w-sm mx-auto px-4 py-10">
+    <div className="min-h-dvh flex flex-col items-center max-w-sm mx-auto px-4 pt-16 pb-12">
 
       {/* Title */}
       <div className="text-center mb-10 select-none">
@@ -67,6 +77,38 @@ export default function PresetSelect() {
             </div>
           </button>
         ))}
+      </div>
+
+      {/* How to Play */}
+      <div className="w-full mt-6">
+        <button
+          onClick={() => setOpen(v => !v)}
+          className="w-full flex items-center justify-between px-4 py-3 bg-white rounded-2xl border border-gray-100 shadow-sm text-gray-600 font-semibold text-sm transition-all active:scale-[0.98]"
+        >
+          <span className="flex items-center gap-2">
+            <span className="text-base">📖</span> How to Play
+          </span>
+          <span className={`text-gray-400 text-xs transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>▼</span>
+        </button>
+
+        {open && (
+          <div className="mt-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            {HOW_TO_PLAY.map((item, i) => (
+              <div
+                key={item.step}
+                className={`flex gap-4 px-4 py-4 ${i < HOW_TO_PLAY.length - 1 ? 'border-b border-gray-50' : ''}`}
+              >
+                <span className="w-7 h-7 rounded-full bg-violet-100 text-violet-600 text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5">
+                  {item.step}
+                </span>
+                <div>
+                  <p className="text-gray-800 font-bold text-sm mb-0.5">{item.title}</p>
+                  <p className="text-gray-400 text-xs leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Secret admin access */}
