@@ -1,7 +1,19 @@
 import { useState, useEffect } from 'react';
 import { defaultWordPairs, adultWordPairs } from '../data/wordPresets.js';
 
-const STORAGE_KEY = 'imposter-finder-word-pairs';
+const KEYS = {
+  family: 'imposter-finder-pairs-family',
+  adult:  'imposter-finder-pairs-adult',
+};
+
+const DEFAULTS = {
+  family: defaultWordPairs,
+  adult:  adultWordPairs,
+};
+
+function getPreset() {
+  return localStorage.getItem('imposter-finder-preset') === 'adult' ? 'adult' : 'family';
+}
 
 function isValidPair(p) {
   return (
@@ -16,25 +28,27 @@ function isValidPair(p) {
   );
 }
 
-function loadPairs() {
+function loadPairs(preset) {
+  const defaults = DEFAULTS[preset];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultWordPairs;
+    const raw = localStorage.getItem(KEYS[preset]);
+    if (!raw) return defaults;
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return defaultWordPairs;
+    if (!Array.isArray(parsed)) return defaults;
     const valid = parsed.filter(isValidPair);
-    return valid.length > 0 ? valid : defaultWordPairs;
+    return valid.length > 0 ? valid : defaults;
   } catch {
-    return defaultWordPairs;
+    return defaults;
   }
 }
 
 export function useWordPairs() {
-  const [pairs, setPairs] = useState(loadPairs);
+  const preset = getPreset();
+  const [pairs, setPairs] = useState(() => loadPairs(preset));
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(pairs));
-  }, [pairs]);
+    localStorage.setItem(KEYS[preset], JSON.stringify(pairs));
+  }, [pairs, preset]);
 
   function addPair({ category, crew, imposter }) {
     const newPair = { id: Date.now().toString(), category, crew, imposter };
@@ -46,14 +60,12 @@ export function useWordPairs() {
   }
 
   function resetToDefaults() {
-    localStorage.removeItem(STORAGE_KEY);
-    setPairs(defaultWordPairs);
+    localStorage.removeItem(KEYS[preset]);
+    setPairs(DEFAULTS[preset]);
   }
 
   function getRandomPair() {
-    const preset = localStorage.getItem('imposter-finder-preset');
-    const pool = preset === 'adult' ? adultWordPairs : pairs;
-    return pool[Math.floor(Math.random() * pool.length)];
+    return pairs[Math.floor(Math.random() * pairs.length)];
   }
 
   return { pairs, addPair, deletePair, resetToDefaults, getRandomPair };

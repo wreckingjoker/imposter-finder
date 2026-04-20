@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import SplashScreen from './components/SplashScreen.jsx';
 import PresetSelect from './pages/PresetSelect.jsx';
 import Lobby from './pages/Lobby.jsx';
 import CardReveal from './pages/CardReveal.jsx';
@@ -9,8 +11,11 @@ import GameOver from './pages/GameOver.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 
 export default function App() {
+  const [splash, setSplash] = useState(true);
+
   return (
     <div className="min-h-dvh bg-gradient-to-br from-violet-50 via-white to-sky-50">
+      {splash && <SplashScreen onDone={() => setSplash(false)} />}
       <Routes>
         <Route path="/" element={<PresetSelect />} />
         <Route path="/lobby" element={<Lobby />} />
