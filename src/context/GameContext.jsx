@@ -26,6 +26,7 @@ function gameReducer(state, action) {
           id: String(i),
           name,
           word: i === imposterIndex ? wordPair.imposter : wordPair.crew,
+          wordContext: i === imposterIndex ? wordPair.imposterContext : wordPair.crewContext,
           isEliminated: false,
           isImposter: i === imposterIndex,
         })),

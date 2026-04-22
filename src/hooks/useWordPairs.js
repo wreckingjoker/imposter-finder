@@ -28,6 +28,17 @@ function isValidPair(p) {
   );
 }
 
+function mergeContext(pairs, defaults) {
+  const defaultsById = Object.fromEntries(defaults.map(d => [d.id, d]));
+  return pairs.map(p => {
+    if (p.crewContext && p.imposterContext) return p;
+    const def = defaultsById[p.id];
+    return def
+      ? { ...p, crewContext: def.crewContext, imposterContext: def.imposterContext }
+      : p;
+  });
+}
+
 function loadPairs(preset) {
   const defaults = DEFAULTS[preset];
   try {
@@ -36,7 +47,8 @@ function loadPairs(preset) {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return defaults;
     const valid = parsed.filter(isValidPair);
-    return valid.length > 0 ? valid : defaults;
+    if (valid.length === 0) return defaults;
+    return mergeContext(valid, defaults);
   } catch {
     return defaults;
   }

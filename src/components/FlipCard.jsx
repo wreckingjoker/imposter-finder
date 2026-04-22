@@ -3,7 +3,7 @@ import { GAME_CONFIG } from '../config/game.js';
 
 const TOTAL = GAME_CONFIG.CARD_REVEAL_MS / 1000;
 
-export default function FlipCard({ word, onSeen }) {
+export default function FlipCard({ word, wordContext, onSeen }) {
   const [flipped, setFlipped] = useState(false);
   const [timeLeft, setTimeLeft] = useState(TOTAL);
   const [started, setStarted] = useState(false);
@@ -78,7 +78,10 @@ export default function FlipCard({ word, onSeen }) {
           >
             <span className="text-violet-400 text-xs font-bold uppercase tracking-widest">Your word</span>
             <span className="text-gray-900 text-3xl font-extrabold text-center leading-tight">{word}</span>
-            <span className="text-gray-400 text-xs mt-1">Don't show anyone</span>
+            {wordContext && (
+              <span className="text-gray-400 text-xs text-center leading-relaxed mt-1 px-2">{wordContext}</span>
+            )}
+            <span className="text-gray-300 text-[10px] mt-2 uppercase tracking-widest">Don't show anyone</span>
           </div>
         </div>
       </div>
