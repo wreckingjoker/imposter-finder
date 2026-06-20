@@ -3,7 +3,7 @@ import { GAME_CONFIG } from '../config/game.js';
 
 const TOTAL = GAME_CONFIG.CARD_REVEAL_MS / 1000;
 
-export default function FlipCard({ word, wordContext, onSeen }) {
+export default function FlipCard({ word, wordContext, isImposter, onSeen }) {
   const [flipped, setFlipped] = useState(false);
   const [timeLeft, setTimeLeft] = useState(TOTAL);
   const [started, setStarted] = useState(false);
@@ -68,21 +68,37 @@ export default function FlipCard({ word, wordContext, onSeen }) {
             </span>
           </div>
 
-          {/* Front face */}
-          <div
-            className="absolute inset-0 rounded-3xl bg-white border-2 border-violet-200 flex flex-col items-center justify-center gap-2 shadow-2xl shadow-violet-100 px-4"
-            style={{
-              backfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)',
-            }}
-          >
-            <span className="text-violet-400 text-xs font-bold uppercase tracking-widest">Your word</span>
-            <span className="text-gray-900 text-3xl font-extrabold text-center leading-tight">{word}</span>
-            {wordContext && (
-              <span className="text-gray-400 text-xs text-center leading-relaxed mt-1 px-2">{wordContext}</span>
-            )}
-            <span className="text-gray-300 text-[10px] mt-2 uppercase tracking-widest">Don't show anyone</span>
-          </div>
+          {/* Front face — crew */}
+          {!isImposter && (
+            <div
+              className="absolute inset-0 rounded-3xl bg-white border-2 border-violet-200 flex flex-col items-center justify-center gap-2 shadow-2xl shadow-violet-100 px-4"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <span className="text-violet-400 text-xs font-bold uppercase tracking-widest">Your word</span>
+              <span className="text-gray-900 text-3xl font-extrabold text-center leading-tight">{word}</span>
+              {wordContext && (
+                <span className="text-gray-400 text-xs text-center leading-relaxed mt-1 px-2">{wordContext}</span>
+              )}
+              <span className="text-gray-300 text-[10px] mt-2 uppercase tracking-widest">Don't show anyone</span>
+            </div>
+          )}
+
+          {/* Front face — imposter */}
+          {isImposter && (
+            <div
+              className="absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-500 via-orange-500 to-red-600 flex flex-col items-center justify-center gap-3 shadow-2xl shadow-rose-200 px-5 text-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <span className="text-white/90 text-xs font-bold uppercase tracking-widest">⚠ You are the Imposter</span>
+              <span className="text-white text-3xl font-extrabold leading-tight">{word}</span>
+              <div className="bg-white/20 rounded-2xl px-3 py-2 mt-1">
+                <p className="text-white text-[11px] leading-relaxed">
+                  The crew has a <span className="font-bold">different word</span>. Give vague hints — sound confident but stay generic enough to blend in.
+                </p>
+              </div>
+              <span className="text-white/50 text-[10px] uppercase tracking-widest mt-1">Don't show anyone</span>
+            </div>
+          )}
         </div>
       </div>
 

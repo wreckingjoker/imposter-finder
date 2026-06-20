@@ -41,7 +41,7 @@ export default function CardReveal() {
       </div>
 
       {/* Card */}
-      <FlipCard key={state.currentPlayerIndex} word={currentPlayer.word} wordContext={currentPlayer.wordContext} onSeen={handleSeen} />
+      <FlipCard key={state.currentPlayerIndex} word={currentPlayer.word} wordContext={currentPlayer.wordContext} isImposter={currentPlayer.isImposter} onSeen={handleSeen} />
 
       {/* Progress dots */}
       <div className="flex gap-2 mt-10">
