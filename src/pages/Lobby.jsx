@@ -15,7 +15,14 @@ export default function Lobby() {
   const { getRandomPair } = useWordPairs();
   const navigate = useNavigate();
 
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState(() => {
+    try {
+      const saved = localStorage.getItem('imposter-finder-players');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const pressTimer = useRef(null);
@@ -24,6 +31,10 @@ export default function Lobby() {
   useEffect(() => {
     if (state.phase === 'card-reveal') navigate('/card-reveal');
   }, [state.phase, navigate]);
+
+  useEffect(() => {
+    localStorage.setItem('imposter-finder-players', JSON.stringify(players));
+  }, [players]);
 
   function handleTitlePressStart() {
     pressTimer.current = setTimeout(() => navigate('/admin'), 3000);
