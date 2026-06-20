@@ -86,17 +86,17 @@ export default function FlipCard({ word, wordContext, isImposter, onSeen }) {
           {/* Front face — imposter */}
           {isImposter && (
             <div
-              className="absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-500 via-orange-500 to-red-600 flex flex-col items-center justify-center gap-3 shadow-2xl shadow-rose-200 px-5 text-center"
+              className="absolute inset-0 rounded-3xl bg-white border-2 border-violet-200 flex flex-col items-center justify-center gap-2 shadow-2xl shadow-violet-100 px-5 text-center"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <span className="text-white/90 text-xs font-bold uppercase tracking-widest">⚠ You are the Imposter</span>
-              <span className="text-white text-3xl font-extrabold leading-tight">{word}</span>
-              <div className="bg-white/20 rounded-2xl px-3 py-2 mt-1">
-                <p className="text-white text-[11px] leading-relaxed">
-                  The crew has a <span className="font-bold">different word</span>. Give vague hints — sound confident but stay generic enough to blend in.
+              <span className="text-rose-400 text-xs font-bold uppercase tracking-widest">⚠ You are the Imposter</span>
+              <span className="text-gray-900 text-3xl font-extrabold leading-tight">{word}</span>
+              <div className="bg-rose-50 border border-rose-100 rounded-2xl px-3 py-2 mt-1">
+                <p className="text-rose-400 text-[11px] leading-relaxed">
+                  Crew has a <span className="font-bold">different word</span>. Be vague — blend in.
                 </p>
               </div>
-              <span className="text-white/50 text-[10px] uppercase tracking-widest mt-1">Don't show anyone</span>
+              <span className="text-gray-300 text-[10px] uppercase tracking-widest mt-1">Don't show anyone</span>
             </div>
           )}
         </div>
