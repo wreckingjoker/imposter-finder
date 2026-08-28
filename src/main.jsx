@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { GameProvider } from './context/GameContext.jsx';
+import { TruthOrDareProvider } from './context/TruthOrDareContext.jsx';
 import App from './App.jsx';
 import './index.css';
 
@@ -9,7 +10,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <GameProvider>
-        <App />
+        <TruthOrDareProvider>
+          <App />
+        </TruthOrDareProvider>
       </GameProvider>
     </BrowserRouter>
   </StrictMode>

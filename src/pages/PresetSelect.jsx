@@ -42,6 +42,14 @@ export default function PresetSelect() {
   return (
     <div className="min-h-dvh flex flex-col items-center max-w-sm mx-auto px-4 pt-16 pb-12">
 
+      {/* Back to game select */}
+      <button
+        onClick={() => navigate('/')}
+        className="text-violet-500 text-sm mb-6 flex items-center gap-1 hover:text-violet-700 font-semibold transition-colors self-start"
+      >
+        ← Choose Game
+      </button>
+
       {/* Title */}
       <div className="text-center mb-10 select-none">
         <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-violet-600 via-pink-500 to-indigo-600 bg-clip-text text-transparent mb-2">

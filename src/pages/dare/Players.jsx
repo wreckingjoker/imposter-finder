@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGame } from '../context/GameContext.jsx';
-import { useWordPairs } from '../hooks/useWordPairs.js';
-import { GAME_CONFIG } from '../config/game.js';
+import { useTruthOrDare } from '../../context/TruthOrDareContext.jsx';
+import { DARE_CONFIG } from '../../config/dare.js';
 
 const CHIP_COLORS = [
   'bg-violet-500', 'bg-pink-500', 'bg-amber-500',
@@ -10,14 +9,13 @@ const CHIP_COLORS = [
   'bg-emerald-500', 'bg-orange-500', 'bg-indigo-500', 'bg-cyan-500',
 ];
 
-export default function Lobby() {
-  const { state, dispatch } = useGame();
-  const { getRandomPair } = useWordPairs();
+export default function Players() {
+  const { state, dispatch } = useTruthOrDare();
   const navigate = useNavigate();
 
   const [players, setPlayers] = useState(() => {
     try {
-      const saved = localStorage.getItem('imposter-finder-players');
+      const saved = localStorage.getItem('truth-or-dare-players');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -29,15 +27,15 @@ export default function Lobby() {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (state.phase === 'card-reveal') navigate('/card-reveal');
+    if (state.phase === 'wheel') navigate('/dare/wheel');
   }, [state.phase, navigate]);
 
   useEffect(() => {
-    localStorage.setItem('imposter-finder-players', JSON.stringify(players));
+    localStorage.setItem('truth-or-dare-players', JSON.stringify(players));
   }, [players]);
 
   function handleTitlePressStart() {
-    pressTimer.current = setTimeout(() => navigate('/admin'), 3000);
+    pressTimer.current = setTimeout(() => navigate('/dare/admin'), 3000);
   }
   function handleTitlePressEnd() {
     clearTimeout(pressTimer.current);
@@ -46,8 +44,8 @@ export default function Lobby() {
   function addPlayer() {
     const name = input.trim();
     if (!name) return;
-    if (players.length >= GAME_CONFIG.MAX_PLAYERS) {
-      setError(`Maximum ${GAME_CONFIG.MAX_PLAYERS} players.`);
+    if (players.length >= DARE_CONFIG.MAX_PLAYERS) {
+      setError(`Maximum ${DARE_CONFIG.MAX_PLAYERS} players.`);
       return;
     }
     if (players.some(p => p.toLowerCase() === name.toLowerCase())) {
@@ -70,19 +68,19 @@ export default function Lobby() {
   }
 
   function startGame() {
-    if (players.length < GAME_CONFIG.MIN_PLAYERS) return;
-    const wordPair = getRandomPair();
-    dispatch({ type: 'START_GAME', payload: { players, wordPair } });
+    if (players.length < DARE_CONFIG.MIN_PLAYERS) return;
+    const mode = localStorage.getItem('truth-or-dare-mode') === 'family' ? 'family' : 'friends';
+    dispatch({ type: 'START', payload: { mode, players } });
   }
 
-  const canStart = players.length >= GAME_CONFIG.MIN_PLAYERS;
+  const canStart = players.length >= DARE_CONFIG.MIN_PLAYERS;
 
   return (
     <div className="min-h-dvh flex flex-col max-w-sm mx-auto px-4 py-8">
 
-      {/* Back to preset select */}
+      {/* Back to mode select */}
       <button
-        onClick={() => navigate('/imposter')}
+        onClick={() => navigate('/dare')}
         className="text-violet-500 text-sm mb-4 flex items-center gap-1 hover:text-violet-700 font-semibold transition-colors self-start"
       >
         ← Change Mode
@@ -96,11 +94,11 @@ export default function Lobby() {
           onMouseLeave={handleTitlePressEnd}
           onTouchStart={handleTitlePressStart}
           onTouchEnd={handleTitlePressEnd}
-          className="text-4xl font-extrabold tracking-tight cursor-pointer bg-gradient-to-r from-violet-600 via-pink-500 to-indigo-600 bg-clip-text text-transparent"
+          className="text-4xl font-extrabold tracking-tight cursor-pointer bg-gradient-to-r from-rose-500 via-orange-400 to-violet-500 bg-clip-text text-transparent"
         >
-          Find the Imposter
+          Truth or Dare
         </h1>
-        <p className="text-gray-400 text-sm mt-2">Social deduction for 3–10 players</p>
+        <p className="text-gray-400 text-sm mt-2">Add 3–12 players to spin</p>
       </div>
 
       {/* Add player input */}
@@ -117,7 +115,7 @@ export default function Lobby() {
           />
           <button
             onClick={addPlayer}
-            disabled={!input.trim() || players.length >= GAME_CONFIG.MAX_PLAYERS}
+            disabled={!input.trim() || players.length >= DARE_CONFIG.MAX_PLAYERS}
             className="bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl font-semibold px-5 py-3 transition-all shadow-sm"
           >
             Add
@@ -134,7 +132,7 @@ export default function Lobby() {
             ? 'bg-violet-100 text-violet-600'
             : 'bg-gray-100 text-gray-400'
         }`}>
-          {players.length} / {GAME_CONFIG.MAX_PLAYERS}
+          {players.length} / {DARE_CONFIG.MAX_PLAYERS}
         </span>
       </div>
 
@@ -142,7 +140,7 @@ export default function Lobby() {
       <div className="flex-1 mb-6">
         {players.length === 0 ? (
           <div className="bg-white border-2 border-dashed border-gray-200 rounded-2xl px-4 py-10 text-center text-gray-400 text-sm">
-            Add at least {GAME_CONFIG.MIN_PLAYERS} players to start
+            Add at least {DARE_CONFIG.MIN_PLAYERS} players to start
           </div>
         ) : (
           <ul className="space-y-2">
@@ -170,15 +168,15 @@ export default function Lobby() {
         )}
       </div>
 
-      {/* Start Game */}
+      {/* Start */}
       <button
         onClick={startGame}
         disabled={!canStart}
-        className="w-full bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 hover:from-violet-600 hover:via-purple-600 hover:to-indigo-600 disabled:opacity-30 disabled:cursor-not-allowed text-white rounded-2xl font-bold text-lg py-4 transition-all shadow-lg shadow-violet-200"
+        className="w-full bg-gradient-to-r from-rose-500 via-orange-400 to-violet-500 hover:brightness-105 disabled:opacity-30 disabled:cursor-not-allowed text-white rounded-2xl font-bold text-lg py-4 transition-all shadow-lg shadow-rose-200"
       >
         {canStart
-          ? `Start Game · ${players.length} Players`
-          : `Need ${GAME_CONFIG.MIN_PLAYERS - players.length} more player${GAME_CONFIG.MIN_PLAYERS - players.length === 1 ? '' : 's'}`}
+          ? `Start · ${players.length} Players`
+          : `Need ${DARE_CONFIG.MIN_PLAYERS - players.length} more player${DARE_CONFIG.MIN_PLAYERS - players.length === 1 ? '' : 's'}`}
       </button>
     </div>
   );
