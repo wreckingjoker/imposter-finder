@@ -49,10 +49,10 @@ export default function ModeSelect() {
 
       {/* Title */}
       <div className="text-center mb-10 select-none">
-        <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-rose-500 via-orange-400 to-violet-500 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-rose-500 via-orange-400 to-violet-500 bg-clip-text text-transparent mb-2 drop-shadow-[0_0_16px_rgba(255,255,255,0.85)]">
           Truth or Dare
         </h1>
-        <p className="text-gray-400 text-sm">Who's playing tonight?</p>
+        <p className="text-gray-700 text-sm font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">Who's playing tonight?</p>
       </div>
 
       {/* How to play */}
@@ -101,6 +101,16 @@ export default function ModeSelect() {
           </button>
         ))}
       </div>
+
+      {/* Secret admin access */}
+      <button
+        onClick={() => navigate('/dare/admin')}
+        className="fixed bottom-4 left-4 text-xl opacity-40 select-none"
+        aria-label=""
+        tabIndex={-1}
+      >
+        😏
+      </button>
 
     </div>
   );

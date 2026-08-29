@@ -94,11 +94,11 @@ export default function Players() {
           onMouseLeave={handleTitlePressEnd}
           onTouchStart={handleTitlePressStart}
           onTouchEnd={handleTitlePressEnd}
-          className="text-4xl font-extrabold tracking-tight cursor-pointer bg-gradient-to-r from-rose-500 via-orange-400 to-violet-500 bg-clip-text text-transparent"
+          className="text-4xl font-extrabold tracking-tight cursor-pointer bg-gradient-to-r from-rose-500 via-orange-400 to-violet-500 bg-clip-text text-transparent drop-shadow-[0_0_16px_rgba(255,255,255,0.85)]"
         >
           Truth or Dare
         </h1>
-        <p className="text-gray-400 text-sm mt-2">Add 3–12 players to spin</p>
+        <p className="text-gray-700 text-sm mt-2 font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">Add 3–12 players to spin</p>
       </div>
 
       {/* Add player input */}

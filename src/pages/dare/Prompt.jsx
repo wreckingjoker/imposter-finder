@@ -44,7 +44,7 @@ export default function Prompt() {
       {/* Header */}
       <div className="text-center mb-8 select-none">
         <span className="text-5xl block mb-3">🎯</span>
-        <h1 className="text-2xl font-extrabold text-gray-900 leading-snug">
+        <h1 className="text-2xl font-extrabold text-gray-900 leading-snug drop-shadow-[0_0_14px_rgba(255,255,255,0.9)]">
           <span className="bg-gradient-to-r from-rose-500 to-orange-400 bg-clip-text text-transparent">{asker?.name}</span>
           {' '}can ask{' '}
           <span className="bg-gradient-to-r from-violet-500 to-indigo-500 bg-clip-text text-transparent">{target?.name}</span>
@@ -101,7 +101,7 @@ export default function Prompt() {
 
       <button
         onClick={endGame}
-        className="text-gray-400 text-sm mt-8 hover:text-rose-400 font-semibold transition-colors self-center"
+        className="text-gray-700 text-sm mt-8 hover:text-rose-500 font-semibold transition-colors self-center drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]"
       >
         End Game
       </button>

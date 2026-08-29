@@ -31,10 +31,10 @@ export default function GameSelect() {
 
       {/* Title */}
       <div className="text-center mb-10 select-none">
-        <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-violet-600 via-pink-500 to-indigo-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-violet-600 via-pink-500 to-indigo-600 bg-clip-text text-transparent mb-2 drop-shadow-[0_0_16px_rgba(255,255,255,0.85)]">
           Pick a Game
         </h1>
-        <p className="text-gray-400 text-sm">One device, pass it around</p>
+        <p className="text-gray-700 text-sm font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">One device, pass it around</p>
       </div>
 
       {/* Game cards */}
